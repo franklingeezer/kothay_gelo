@@ -125,6 +125,8 @@ const insight = useMemo(() => {
   if (spentToday > currentLimit) {
     return `LIMIT SHESH! ৳${Math.abs(currentLimit - spentToday)} extra khoroch! Abba janle kintu bashay dhukte dibe na.`;
   }
+  
+  
 
   // 5. THE "EVERY LITTLE EXPENSE" ROAST (The Randomizer)
   // This triggers if none of the above specific ones hit.

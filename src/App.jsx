@@ -51,6 +51,8 @@ export default function App() {
     loanStats = { lent: 0, debt: 0 }
   } = useExpenses();
 
+  
+
   const [activeTab, setActiveTab] = useState('home');
   const [showAdd, setShowAdd] = useState(false);
   const [search, setSearch] = useState('');
@@ -83,6 +85,8 @@ export default function App() {
     if (cat === 'shopping') return '🛍️';
     if (cat === 'bills') return '🧾';
     if (cat === 'loan') return '🤝';
+    if (cat === 'health' || cat === 'medical') return '💊';
+    if (cat === 'other') return '🧐';
     return <Ghost size={18} className="text-slate-400"/>;
   };
 
