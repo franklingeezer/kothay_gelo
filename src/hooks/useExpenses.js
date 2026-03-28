@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 
 export const useExpenses = () => {
+  // --- 1. STATE INITIALIZATION ---
   const [expenses, setExpenses] = useState(() => {
     const saved = localStorage.getItem('kg_expenses');
     return saved ? JSON.parse(saved) : [];
@@ -15,24 +16,28 @@ export const useExpenses = () => {
     return savedLimit ? Number(savedLimit) : 0; 
   });
 
+  // --- 2. PERSISTENCE ---
   useEffect(() => {
     localStorage.setItem('kg_expenses', JSON.stringify(expenses));
     localStorage.setItem('kg_budget', budget.toString());
     localStorage.setItem('kg_manual_limit', manualLimit.toString());
   }, [expenses, budget, manualLimit]);
 
+  // --- 3. ACTIONS ---
   const addExpense = (amount, category, method, note, isLoan = false, loanType = 'lent') => {
     const newEntry = {
       id: Date.now(),
       amount: Number(amount),
-      category: isLoan ? "Loan" : category,
+      // If it's a loan, we label it "Loan", otherwise we use the provided category
+      category: isLoan ? "Loan" : (category || "Other"), 
       method, 
       note, 
       isLoan,
       loanType: isLoan ? loanType : null,
       date: new Date().toLocaleDateString(),
-      time: new Date().getHours(), // Added time tracking for late-night roasts
+      time: new Date().getHours(),
     };
+    // We put the newest at the start of the array
     setExpenses(prev => [newEntry, ...prev]);
   };
 
@@ -46,7 +51,7 @@ export const useExpenses = () => {
     }
   };
 
-  // --- CALCULATIONS ---
+  // --- 4. CALCULATIONS ---
   const totalSpent = useMemo(() => 
     (expenses || []).filter(e => !e.isLoan).reduce((sum, e) => sum + e.amount, 0), [expenses]);
 
@@ -65,18 +70,28 @@ export const useExpenses = () => {
       .reduce((sum, e) => sum + e.amount, 0);
   }, [expenses]);
 
-  const loanStats = useMemo(() => {
-    return (expenses || []).filter(e => e.isLoan).reduce((acc, curr) => {
-      if (curr.loanType === 'lent') acc.lent += curr.amount;
-      if (curr.loanType === 'borrowed') acc.debt += curr.amount;
-      return acc;
-    }, { lent: 0, debt: 0 });
-  }, [expenses]);
+  // FIX: This now correctly calculates debt so your dashboard cards update!
+  // --- FIX: Robust Loan Calculation ---
+const loanStats = useMemo(() => {
+  return (expenses || []).filter(e => e.isLoan).reduce((acc, curr) => {
+    // We convert to lowercase to prevent "Borrowed" vs "borrowed" issues
+    const type = curr.loanType?.toLowerCase();
+    
+    if (type === 'lent') {
+      acc.lent += curr.amount;
+    } else if (type === 'borrowed' || type === 'borrow' || type === 'debt') {
+      acc.debt += curr.amount;
+    }
+    
+    return acc;
+  }, { lent: 0, debt: 0 });
+}, [expenses]);
 
   const categoryData = useMemo(() => {
     const groups = (expenses || []).reduce((acc, exp) => {
       if (exp.isLoan) return acc;
-      acc[exp.category] = (acc[exp.category] || 0) + exp.amount;
+      const cat = exp.category || "Other";
+      acc[cat] = (acc[cat] || 0) + exp.amount;
       return acc;
     }, {});
     return Object.entries(groups).map(([name, value]) => ({ name, value }));
@@ -91,57 +106,72 @@ export const useExpenses = () => {
     return budget > 0 ? (totalSpent / budget) * 100 : 0;
   }, [totalSpent, budget]);
 
-  // --- THE "NO MERCY" ROAST ENGINE ---
-const insight = useMemo(() => {
-  const currentLimit = manualLimit > 0 ? manualLimit : dailySuggestion;
-  const todayStr = new Date().toLocaleDateString();
-  const todayExpenses = (expenses || []).filter(e => e.date === todayStr);
-  const lastExpense = todayExpenses[0]; // Get the very last thing you logged
+  // --- 5. THE "NO MERCY" ROAST ENGINE ---
+  const insight = useMemo(() => {
+    const currentLimit = manualLimit > 0 ? manualLimit : dailySuggestion;
+    const todayStr = new Date().toLocaleDateString();
+    
+    // Filter today's items
+    const todayExpenses = (expenses || []).filter(e => e.date === todayStr);
+    
+    // CRITICAL FIX: Since we use [newEntry, ...prev], index 0 is always the latest
+    const lastExpense = todayExpenses[0]; 
+    const lastCat = lastExpense?.category?.toLowerCase() || "";
+    const lastNote = lastExpense?.note?.toLowerCase() || "";
 
-  // 1. THE "FERESTA" (No spending) - Still a roast
-  if (spentToday === 0 && todayExpenses.length === 0) {
-    return "Ajke ek taka-o khoroch koro nai? Tumi ki manush naki feresta? Shotti kore bolo, kar pocket marso?";
-  }
+    // A. ZERO SPENDING
+    if (spentToday === 0 && todayExpenses.length === 0) {
+      return "Ajke ek taka-o khoroch koro nai? Tumi ki manush naki feresta? Shotti kore bolo, kar pocket marso?";
+    }
 
-  // 2. THE AUDACITY CHECK (Spending while in debt)
-  if (loanStats.debt > 0) {
-    return `Manush-er kache ৳${loanStats.debt} dena, r tumi ekhane boga-r moto khoroch korteso? Sharam nai?`;
-  }
+    // B. LOAN/DEBT SPECIFIC (Highest priority roasting)
+    if (lastExpense?.isLoan && lastExpense?.loanType === 'borrowed') {
+      return "Nijeder taka shesh kore ekhon manush-er kache haath patteso? Sharam lage na?";
+    }
 
-  // 3. KEYWORD SPECIFIC ROASTS (Highest Priority)
-  if (lastExpense?.note?.toLowerCase().includes('gf') || lastExpense?.note?.toLowerCase().includes('date')) {
-    return "Gf niye ghurte gile pocket to khali hobei! Biye korba kobe? Shoshurbari theke ki dowry paba?";
-  }
-  
-  if (lastExpense?.category?.toLowerCase() === 'transport') {
-    return `৳${lastExpense.amount} rickshaw bhara?! Paa duita ki shudhu pant porar jonno dise Allah?`;
-  }
+    if (loanStats.debt > 0 && !lastExpense?.isLoan) {
+      return `Manush-er kache ৳${loanStats.debt} dena, r tumi ekhane boga-r moto khoroch korteso? Sharam nai?`;
+    }
 
-  if (lastExpense?.category?.toLowerCase() === 'food') {
-    return "Khaite khaite shesh hoye gela! Shari-din ki khali pet-er chinta? Ar koto gilla lagbe?";
-  }
+    // C. KEYWORD/CATEGORY SPECIFIC
+    if (lastNote.includes('gf') || lastNote.includes('date')) {
+      return "Gf niye ghurte gile pocket to khali hobei! Biye korba kobe? Shoshurbari theke ki dowry paba?";
+    }
+    
+    if (lastCat === 'transport') {
+      return `৳${lastExpense.amount} rickshaw bhara?! Paa duita ki shudhu pant porar jonno dise Allah? Hatta shiko!`;
+    }
 
-  // 4. THE "OVER LIMIT" PANIC
-  if (spentToday > currentLimit) {
-    return `LIMIT SHESH! ৳${Math.abs(currentLimit - spentToday)} extra khoroch! Abba janle kintu bashay dhukte dibe na.`;
-  }
-  
-  
+    if (lastCat === 'food') {
+      return "Khaite khaite shesh hoye gela! Shari-din ki khali pet-er chinta? Ar koto gilla lagbe?";
+    }
 
-  // 5. THE "EVERY LITTLE EXPENSE" ROAST (The Randomizer)
-  // This triggers if none of the above specific ones hit.
-  const randomRoasts = [
-    "Taka ki gache dhore? Ei ৳" + lastExpense?.amount + " khoroch na korle ki hoto?",
-    "Haye haye! Shongshar to tumi rastay boshaia diba dekhtesi.",
-    "Ekhon ৳" + lastExpense?.amount + ", eibhabe kotee-poti hoba naki deuliyah?",
-    "Mayer kache bolbo? Taka ki bhashay ashe?",
-    "Budget-er 12ta bajae dise. Shabas, beta! Ar koto taka uraba?",
-    "Tumi ki bhabso tumi Ambani-r nati? Eto bilashita keno?"
-  ];
+    if (lastCat === 'health' || lastCat === 'medical') {
+      return "Sharir-er jotno nita koto bar bolsi? Ekhon daktar-re taka dita bhalo lagtise?";
+    }
 
-  return randomRoasts[Math.floor(Math.random() * randomRoasts.length)];
+    if (lastCat === 'other') {
+      return "Category 'Other' mane ki? Shotti kore bolo to taka diye ki ultapolta kaj korso?";
+    }
 
-}, [spentToday, dailySuggestion, manualLimit, progress, loanStats, expenses]);
+    // D. LIMIT PANIC
+    if (spentToday > currentLimit) {
+      return `LIMIT SHESH! ৳${Math.abs(currentLimit - spentToday)} extra khoroch! Abba janle kintu bashay dhukte dibe na.`;
+    }
+
+    // E. RANDOM JUDGMENT
+    const randomRoasts = [
+      `Taka ki gache dhore? Ei ৳${lastExpense?.amount} khoroch na korle ki hoto?`,
+      "Haye haye! Shongshar to tumi rastay boshaia diba dekhtesi.",
+      `Ekhon ৳${lastExpense?.amount}, eibhabe kotee-poti hoba naki deuliyah?`,
+      "Mayer kache bolbo? Taka ki bhashay ashe?",
+      "Budget-er 12ta bajae dise. Shabas, beta! Ar koto taka uraba?",
+      "Tumi ki bhabso tumi Ambani-r nati? Eto bilashita keno?"
+    ];
+
+    return randomRoasts[Math.floor(Math.random() * randomRoasts.length)];
+
+  }, [spentToday, dailySuggestion, manualLimit, progress, loanStats, expenses]);
 
   return {
     expenses, budget, setBudget, addExpense, deleteExpense, clearAllData,
