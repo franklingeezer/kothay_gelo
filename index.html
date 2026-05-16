@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#060610" />
+  <meta name="description" content="Kothay Gelo? — Smart Expense Tracker for Bangladesh" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Kothay Gelo?" />
+  <link rel="icon" type="image/png" href="/logo.png" />
+  <link rel="apple-touch-icon" href="/logo.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <title>Kothay Gelo? 💸</title>
+  <style>
+    #splash {
+      position: fixed; inset: 0;
+      background: #060610;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 14px; z-index: 9999;
+      transition: opacity .4s ease;
+      font-family: 'Outfit', sans-serif;
+    }
+    #splash img { width: 88px; height: 88px; border-radius: 22px; }
+    #splash h1 { font-size: 26px; font-weight: 900; color: #f0edff; letter-spacing: -1px; }
+    #splash h1 span { background: linear-gradient(135deg,#7c3aed,#4f46e5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    #splash p { font-size: 12px; color: #5e5880; font-weight: 600; }
+    #splash.hidden { opacity: 0; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <div id="splash">
+    <img src="/logo.png" alt="Kothay Gelo" />
+    <h1>Kothay <span>Gelo?</span></h1>
+    <p>Smart Expense Tracker 💸</p>
+  </div>
+  <div id="root"></div>
+  <script>
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const s = document.getElementById('splash')
+        if (s) { s.classList.add('hidden'); setTimeout(() => s.remove(), 400) }
+      }, 900)
+    })
+  </script>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>

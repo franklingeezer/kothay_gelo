@@ -1,0 +1,53 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  /* Use 100dvh — accounts for browser chrome on mobile */
+  height: 100dvh;
+  max-width: 430px;
+  margin: 0 auto;
+  position: relative;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Bottom padding = navbar height (70px) + safe area */
+  padding-bottom: max(80px, calc(70px + env(safe-area-inset-bottom)));
+  scroll-behavior: smooth;
+  /* Prevent content going under navbar */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Loading screen ── */
+.loading {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: var(--bg);
+  max-width: 430px;
+  margin: 0 auto;
+}
+.loadingLogo {
+  width: 80px; height: 80px;
+  border-radius: 20px;
+  animation: logoPulse 1.6s ease-in-out infinite;
+}
+@keyframes logoPulse {
+  0%,100% { transform: scale(1);    opacity: 1; }
+  50%      { transform: scale(1.06); opacity: .8; }
+}
+.loadingSpinner {
+  width: 28px; height: 28px;
+  border: 2.5px solid rgba(124,58,237,.2);
+  border-top-color: var(--violet);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loadingText { font-size: 13px; color: var(--muted); font-weight: 600; }

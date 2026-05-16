@@ -1,0 +1,110 @@
+/* ── Lock screen ── */
+.lockPage {
+  min-height: 100dvh; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); position: relative; overflow: hidden; padding: 24px 20px;
+}
+.orb1 {
+  position: absolute; top: -120px; left: -80px; width: 360px; height: 360px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(124,58,237,.18) 0%, transparent 70%);
+  pointer-events: none; animation: orbFloat 10s ease-in-out infinite;
+}
+.orb2 {
+  position: absolute; bottom: -100px; right: -80px; width: 280px; height: 280px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(16,185,129,.12) 0%, transparent 70%);
+  pointer-events: none; animation: orbFloat 14s ease-in-out infinite reverse;
+}
+@keyframes orbFloat {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%      { transform: translate(20px,-15px) scale(1.04); }
+}
+.lockInner {
+  position: relative; z-index: 1; width: 100%; max-width: 340px;
+  display: flex; flex-direction: column; align-items: center;
+  animation: fadeUp .4s cubic-bezier(.4,0,.2,1) both;
+}
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+.lockLogo { margin-bottom: 16px; }
+.lockLogoImg { width: 70px; height: 70px; border-radius: 20px; box-shadow: 0 8px 28px rgba(124,58,237,.3); }
+.lockIcon { font-size: 36px; margin-bottom: 4px; }
+
+/* ── PIN Pad ── */
+.padWrap { width: 100%; display: flex; flex-direction: column; align-items: center; }
+.padTitle { font-size: 20px; font-weight: 900; color: var(--txt); margin-bottom: 4px; letter-spacing: -.4px; text-align: center; }
+.padSub   { font-size: 13px; color: var(--muted); margin-bottom: 28px; text-align: center; }
+
+.dots { display: flex; gap: 16px; margin-bottom: 14px; }
+.dot {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid var(--bd3); background: transparent;
+  transition: background .15s, border-color .15s, transform .1s;
+}
+.dotFilled { background: var(--violet2); border-color: var(--violet2); transform: scale(1.15); }
+.dotError  { background: var(--red) !important; border-color: var(--red) !important; animation: shake .35s ease; }
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%      { transform: translateX(-6px); }
+  40%      { transform: translateX(6px); }
+  60%      { transform: translateX(-4px); }
+  80%      { transform: translateX(4px); }
+}
+
+.errorMsg {
+  font-size: 13px; font-weight: 600; color: var(--red);
+  margin-bottom: 10px; text-align: center;
+  background: rgba(239,68,68,.1); border-radius: 10px; padding: 6px 16px;
+}
+
+.keypad {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; width: 260px; margin-top: 8px;
+}
+.key {
+  height: 68px; border-radius: 50%; font-size: 22px; font-weight: 800;
+  font-family: var(--fn); color: var(--txt);
+  background: var(--s2); border: 1px solid var(--bd2);
+  cursor: pointer; transition: background .12s, transform .1s, border-color .12s;
+  display: flex; align-items: center; justify-content: center;
+}
+.key:hover  { background: var(--s3); border-color: var(--bd3); }
+.key:active { transform: scale(.93); background: var(--s4); }
+.keyDel { background: transparent; border: none; color: var(--muted); font-size: 20px; }
+.keyDel:hover { color: var(--red); background: rgba(239,68,68,.08); }
+
+/* ── Modal (used inside Settings) ── */
+.overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.72);
+  backdrop-filter: blur(14px); z-index: 600;
+  display: flex; align-items: flex-end; justify-content: center;
+  animation: fadeIn .2s ease;
+}
+.modal {
+  background: var(--s2); border: 1px solid var(--bd2);
+  border-radius: var(--r-2xl) var(--r-2xl) 0 0;
+  padding: 0 20px max(100px,calc(75px + env(safe-area-inset-bottom)));
+  width: 100%; max-width: 430px;
+  animation: slideUp .3s cubic-bezier(.4,0,.2,1);
+  display: flex; flex-direction: column; align-items: center;
+}
+.modalHandle {
+  width: 36px; height: 4px; border-radius: 2px;
+  background: var(--bd3); margin: 14px auto 18px;
+}
+.modalHeader {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 20px; width: 100%;
+}
+.modalTitle { font-size: 18px; font-weight: 900; }
+.modalClose {
+  background: var(--s3); border: 1px solid var(--bd2); color: var(--muted);
+  border-radius: 50%; width: 30px; height: 30px; cursor: pointer;
+  font-size: 12px; display: flex; align-items: center; justify-content: center;
+  transition: color .15s;
+}
+.modalClose:hover { color: var(--txt); }
+
+[data-theme="light"] .key { background: white; }
+[data-theme="light"] .modal { background: white; }
+
+@keyframes fadeIn  { from{opacity:0} to{opacity:1} }
+@keyframes slideUp { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }

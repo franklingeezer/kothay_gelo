@@ -1,0 +1,206 @@
+.page { padding: 22px 16px 32px; position: relative; z-index: 1; }
+
+.topRow { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.title { font-size: 26px; font-weight: 900; letter-spacing: -1px; }
+.addBtn {
+  background: var(--grad); color: white; border: none;
+  border-radius: 20px; padding: 9px 18px; font-size: 12px; font-weight: 800;
+  font-family: var(--fn); cursor: pointer;
+  box-shadow: 0 4px 18px rgba(124,58,237,.35);
+  transition: opacity .2s, transform .1s;
+}
+.addBtn:hover { opacity: .88; transform: translateY(-1px); }
+.addBtn:active { transform: scale(.95); }
+
+/* Summary */
+.summCard {
+  display: flex; align-items: center;
+  background: var(--s2); border: 1px solid var(--bd2);
+  border-radius: var(--r-2xl); padding: 18px;
+  margin-bottom: 16px; position: relative; overflow: hidden;
+}
+.summCard::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(124,58,237,.06), rgba(16,185,129,.04));
+  pointer-events: none;
+}
+.summItem { flex: 1; text-align: center; position: relative; }
+.summVal { font-size: 19px; font-weight: 900; letter-spacing: -.5px; }
+.summLbl { font-size: 9px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .07em; margin-top: 3px; }
+.summDiv { width: 1px; height: 34px; background: var(--bd2); }
+
+/* Goal card */
+.gc {
+  background: var(--s2); border: 1px solid var(--bd);
+  border-radius: var(--r-xl); padding: 18px;
+  margin-bottom: 10px; position: relative; overflow: hidden;
+  transition: border-color .25s, transform .15s;
+}
+.gc:hover { border-color: var(--bd2); }
+.gcGlow { position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; border-radius: 50%; opacity: .12; filter: blur(30px); pointer-events: none; transition: opacity .3s; }
+.gc:hover .gcGlow { opacity: .2; }
+
+.gcHead { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; position: relative; }
+.gcEmoji { font-size: 28px; flex-shrink: 0; }
+.gcInfo { flex: 1; min-width: 0; }
+.gcTitle { font-size: 15px; font-weight: 800; }
+.gcSub { font-size: 11px; color: var(--muted); margin-top: 1px; font-weight: 500; }
+.gcBadge { font-size: 11px; font-weight: 800; color: var(--gold); flex-shrink: 0; white-space: nowrap; }
+.gcDel { background: none; border: none; color: var(--hint); cursor: pointer; font-size: 14px; padding: 2px 4px; transition: color .15s; }
+.gcDel:hover { color: var(--red); }
+
+/* Progress */
+.gcBar { height: 8px; background: rgba(255,255,255,.06); border-radius: 4px; overflow: hidden; margin-bottom: 8px; position: relative; }
+.gcBarFill {
+  height: 100%; border-radius: 4px;
+  transition: width 1s cubic-bezier(.4,0,.2,1);
+  position: relative;
+}
+.gcBarFill::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent); animation: shimmerBar 2s infinite; }
+@keyframes shimmerBar { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+.gcRow { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; }
+.gcLbl { color: var(--muted); }
+.gcPct { font-weight: 900; transition: color .4s; }
+
+/* Deposit btn */
+.depositBtn {
+  width: 100%; border: 1px solid; border-radius: var(--r-lg);
+  padding: 12px; font-size: 13px; font-weight: 800;
+  font-family: var(--fn); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: opacity .2s, transform .1s;
+  position: relative; overflow: hidden;
+}
+.depositBtn::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.08),transparent); pointer-events:none; }
+.depositBtn:hover { opacity: .85; transform: translateY(-1px); }
+.depositBtn:active { transform: scale(.98); }
+
+.gcComplete { text-align: center; font-size: 13px; font-weight: 800; padding: 8px 0 0; }
+
+/* Add card */
+.addCard {
+  width: 100%; display: flex; align-items: center; gap: 14px;
+  background: var(--glass); border: 1.5px dashed var(--bd3);
+  border-radius: var(--r-xl); padding: 18px 20px;
+  cursor: pointer; transition: border-color .2s, background .2s;
+  margin-top: 4px; backdrop-filter: blur(8px);
+}
+.addCard:hover { border-color: var(--violet2); background: rgba(124,58,237,.06); }
+.addCardIco { font-size: 22px; color: var(--violet3); }
+.addCardTxt { flex: 1; font-size: 14px; font-weight: 700; color: var(--txt2); text-align: left; }
+.addCardArrow { font-size: 16px; color: var(--muted); }
+
+/* ── Overlay / Modal ── */
+.overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.7);
+  backdrop-filter: blur(12px); z-index: 500;
+  display: flex; align-items: flex-end; justify-content: center;
+  animation: fadeIn .2s ease;
+}
+.modal {
+  background: var(--s2); border: 1px solid var(--bd2);
+  border-radius: var(--r-2xl) var(--r-2xl) 0 0;
+  padding: 22px 20px max(36px, env(safe-area-inset-bottom));
+  width: 100%; max-width: 430px;
+  animation: slideUp .32s cubic-bezier(.4,0,.2,1);
+  position: relative;
+}
+.modal::before {
+  content: ''; display: block; width: 36px; height: 4px;
+  background: var(--bd3); border-radius: 2px;
+  margin: 0 auto 18px;
+}
+.modalHeader { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.modalEmoji { font-size: 30px; flex-shrink: 0; }
+.modalTitle { font-size: 18px; font-weight: 900; }
+.modalSub { font-size: 11px; color: var(--muted); margin-top: 2px; font-weight: 500; }
+.modalClose {
+  margin-left: auto; background: var(--s3); border: 1px solid var(--bd2);
+  color: var(--muted); border-radius: 50%; width: 32px; height: 32px;
+  cursor: pointer; font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  transition: color .15s, border-color .15s;
+}
+.modalClose:hover { color: var(--txt); border-color: var(--bd3); }
+
+.modalTrack { height: 6px; background: rgba(255,255,255,.06); border-radius: 3px; margin-bottom: 20px; overflow: hidden; }
+.modalTrackFill { height: 100%; border-radius: 3px; transition: width .7s cubic-bezier(.4,0,.2,1); }
+
+.modalAmtWrap {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  background: var(--s3); border: 1px solid var(--bd2);
+  border-radius: var(--r-lg); padding: 14px; margin-bottom: 14px;
+  transition: border-color .2s;
+}
+.modalAmtWrap:focus-within { border-color: var(--violet2); }
+.modalSym { font-size: 24px; font-weight: 800; color: var(--muted); }
+.modalInp {
+  font-size: 38px; font-weight: 900; letter-spacing: -2px;
+  background: none; border: none; color: var(--txt);
+  font-family: var(--fn); width: 180px; text-align: center;
+}
+.modalInp::placeholder { color: var(--hint); }
+.modalInp::-webkit-outer-spin-button, .modalInp::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+.modalQuick { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 16px; justify-content: center; }
+.modalQuickBtn {
+  padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 800;
+  font-family: var(--fn); background: transparent; border: 1px solid;
+  cursor: pointer; transition: opacity .15s;
+}
+.modalQuickBtn:hover { opacity: .7; }
+
+.modalBtn {
+  width: 100%; border: none; border-radius: var(--r-xl); padding: 17px;
+  font-size: 15px; font-weight: 900; font-family: var(--fn);
+  color: white; cursor: pointer;
+  transition: opacity .2s, transform .1s;
+  position: relative; overflow: hidden;
+}
+.modalBtn::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.15),transparent); pointer-events:none; }
+.modalBtn:hover { opacity: .88; transform: translateY(-1px); }
+.modalBtn:active { transform: scale(.99); }
+
+/* Add goal extras */
+.emojiGrid { display: grid; grid-template-columns: repeat(8,1fr); gap: 6px; margin-bottom: 14px; }
+.emojiBtn {
+  background: var(--s3); border: 1px solid var(--bd); border-radius: 10px;
+  padding: 8px 4px; font-size: 18px; cursor: pointer; transition: all .15s; text-align: center;
+}
+.emojiBtn:hover { background: var(--s4); }
+.emojiBtnSel { border-color: var(--violet2) !important; background: rgba(124,58,237,.15) !important; }
+
+.typeRow { display: flex; gap: 8px; margin-bottom: 14px; }
+.typeBtn {
+  flex: 1; padding: 11px; border-radius: var(--r); font-size: 12px; font-weight: 800;
+  font-family: var(--fn); background: var(--s3); border: 1px solid var(--bd2);
+  color: var(--muted); cursor: pointer; transition: all .18s;
+}
+.typeSel { background: var(--grad) !important; border-color: transparent !important; color: white !important; }
+
+.modalField {
+  width: 100%; background: var(--s3); border: 1px solid var(--bd2);
+  border-radius: var(--r); padding: 13px 16px; color: var(--txt);
+  font-family: var(--fn); font-size: 14px; font-weight: 600;
+  margin-bottom: 12px; transition: border-color .2s;
+}
+.modalField:focus { border-color: var(--violet2); outline: none; }
+.modalField::placeholder { color: var(--hint); }
+
+.colorRow { display: flex; gap: 10px; justify-content: center; margin-bottom: 16px; }
+.colorDot {
+  width: 30px; height: 30px; border-radius: 50%; border: 3px solid transparent;
+  cursor: pointer; transition: transform .15s, border-color .15s;
+}
+.colorDot:hover { transform: scale(1.12); }
+.colorDotSel { border-color: white !important; transform: scale(1.18) !important; box-shadow: 0 0 0 2px rgba(255,255,255,.3); }
+
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes slideUp { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+
+[data-theme="light"] .gc { background: white; border-color: rgba(0,0,0,.07); box-shadow: 0 2px 12px rgba(109,40,217,.05); }
+[data-theme="light"] .summCard { background: white; border-color: rgba(0,0,0,.07); }
+[data-theme="light"] .modal { background: white; }
+
+/* Fix: prevent navbar from hiding modal content */
+.modal { padding-bottom: max(90px, calc(70px + env(safe-area-inset-bottom))) !important; }

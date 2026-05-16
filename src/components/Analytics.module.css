@@ -1,0 +1,76 @@
+.page { padding: 22px 16px 32px; position: relative; z-index: 1; }
+.title { font-size: 26px; font-weight: 900; letter-spacing: -1px; margin-bottom: 16px; }
+
+.ptabs { display: flex; gap: 6px; margin-bottom: 14px; }
+.ptab {
+  padding: 8px 20px; border-radius: 20px; font-size: 12px; font-weight: 800;
+  font-family: var(--fn); border: 1px solid var(--bd2); background: transparent;
+  color: var(--muted); cursor: pointer; transition: all .18s;
+}
+.ptab:hover { color: var(--txt2); border-color: var(--bd3); }
+.ptabOn { background: var(--grad) !important; border-color: transparent !important; color: white !important; box-shadow: 0 4px 16px rgba(124,58,237,.35); }
+
+/* KPI row */
+.kpiRow {
+  display: flex; align-items: center;
+  background: var(--s2); border: 1px solid var(--bd2);
+  border-radius: var(--r-2xl); padding: 18px; margin-bottom: 14px;
+  position: relative; overflow: hidden;
+}
+.kpiRow::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(124,58,237,.05),rgba(16,185,129,.03)); pointer-events:none; }
+.kpi { flex: 1; text-align: center; position: relative; }
+.kpiVal { font-size: 18px; font-weight: 900; letter-spacing: -.5px; }
+.kpiLbl { font-size: 8px; color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-top: 3px; }
+.kpiDiv { width: 1px; height: 34px; background: var(--bd2); }
+
+/* View tabs */
+.viewTabs { display: flex; background: var(--s2); border: 1px solid var(--bd); border-radius: var(--r-lg); padding: 4px; margin-bottom: 12px; gap: 4px; }
+.viewTab {
+  flex: 1; padding: 9px; border-radius: var(--r); font-size: 12px; font-weight: 800;
+  font-family: var(--fn); background: transparent; border: none;
+  color: var(--muted); cursor: pointer; transition: all .2s;
+}
+.viewOn { background: var(--s4) !important; color: var(--txt) !important; }
+
+/* Charts */
+.cw { background: var(--s2); border: 1px solid var(--bd); border-radius: var(--r-xl); padding: 18px; margin-bottom: 12px; }
+.cwt { font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .09em; margin-bottom: 14px; }
+
+.tooltip {
+  background: var(--s3); border: 1px solid var(--bd2);
+  border-radius: 10px; padding: 7px 12px;
+  font-size: 13px; font-weight: 900; color: var(--txt);
+  box-shadow: 0 4px 16px rgba(0,0,0,.3);
+}
+
+.noData { color: var(--muted); font-size: 13px; text-align: center; padding: 28px 0; font-weight: 600; }
+
+/* Category list */
+.catList { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.catRow { display: flex; align-items: center; gap: 10px; }
+.catIco { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+.catInfo { flex: 1; min-width: 0; }
+.catName { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+.catPct { font-size: 10px; color: var(--muted); font-weight: 700; }
+.catBar { height: 4px; background: rgba(255,255,255,.06); border-radius: 2px; }
+.catBarFill { height: 100%; border-radius: 2px; transition: width .7s cubic-bezier(.4,0,.2,1); }
+.catAmt { font-size: 14px; font-weight: 900; flex-shrink: 0; }
+
+/* Transactions */
+.txSection { display: flex; flex-direction: column; gap: 7px; }
+.tx {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--s2); border: 1px solid var(--bd);
+  border-radius: var(--r-lg); padding: 13px;
+  transition: background .15s;
+}
+.tx:hover { background: var(--s3); }
+.txIco { width: 42px; height: 42px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 19px; flex-shrink: 0; }
+.txMid { flex: 1; min-width: 0; }
+.txName { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.txMeta { font-size: 10px; color: var(--muted); margin-top: 2px; font-weight: 500; }
+.txAmt { font-size: 14px; font-weight: 900; flex-shrink: 0; }
+
+[data-theme="light"] .cw { background: white; border-color: rgba(0,0,0,.07); box-shadow: 0 2px 12px rgba(109,40,217,.05); }
+[data-theme="light"] .kpiRow { background: white; border-color: rgba(0,0,0,.07); }
+[data-theme="light"] .viewTabs { background: white; }

@@ -1,0 +1,15 @@
+{
+  "appId": "com.kothaygelo.app",
+  "appName": "Kothay Gelo",
+  "webDir": "dist",
+  "android": {
+    "allowMixedContent": true,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  }
+}

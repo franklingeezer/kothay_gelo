@@ -1,0 +1,226 @@
+.page {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+  padding: 24px 20px;
+}
+
+.orb1 {
+  position: absolute; top: -120px; left: -80px;
+  width: 360px; height: 360px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(124,58,237,.18) 0%, transparent 70%);
+  pointer-events: none;
+  animation: orbFloat 10s ease-in-out infinite;
+}
+.orb2 {
+  position: absolute; bottom: -100px; right: -80px;
+  width: 280px; height: 280px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(16,185,129,.12) 0%, transparent 70%);
+  pointer-events: none;
+  animation: orbFloat 14s ease-in-out infinite reverse;
+}
+@keyframes orbFloat {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%      { transform: translate(20px,-15px) scale(1.04); }
+}
+
+.inner {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 360px;
+  display: flex; flex-direction: column; align-items: center;
+  animation: fadeUp .5s cubic-bezier(.4,0,.2,1) both;
+}
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.logoWrap { margin-bottom: 24px; }
+.logo {
+  width: 84px; height: 84px; border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(124,58,237,.3);
+}
+
+/* Welcome */
+.welcome { width: 100%; display: flex; flex-direction: column; align-items: center; }
+.title {
+  font-size: 34px; font-weight: 900; letter-spacing: -1.5px;
+  color: var(--txt); margin-bottom: 8px; text-align: center;
+}
+.title span {
+  background: var(--grad);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.tagline { font-size: 15px; color: var(--txt2); font-weight: 600; margin-bottom: 4px; text-align: center; }
+.sub     { font-size: 13px; color: var(--muted); margin-bottom: 28px; text-align: center; }
+
+.features { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.featureRow {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--s2); border: 1px solid var(--bd2);
+  border-radius: var(--r-lg); padding: 12px 16px;
+}
+.featureIco { font-size: 20px; flex-shrink: 0; }
+.featureTxt { font-size: 14px; font-weight: 600; color: var(--txt2); }
+
+/* Auth step */
+.authStep { width: 100%; display: flex; flex-direction: column; }
+.authTitle { font-size: 26px; font-weight: 900; letter-spacing: -.8px; color: var(--txt); margin-bottom: 4px; }
+.authSub   { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
+
+.fieldGroup { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.lbl { font-size: 12px; font-weight: 700; color: var(--txt2); letter-spacing: .04em; text-transform: uppercase; }
+.hint { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+.inp {
+  width: 100%; background: var(--s2); border: 1px solid var(--bd2);
+  border-radius: var(--r-lg); padding: 14px 16px;
+  font-size: 15px; font-weight: 600; color: var(--txt);
+  font-family: var(--fn); transition: border-color .2s;
+}
+.inp:focus { outline: none; border-color: var(--violet2); box-shadow: 0 0 0 3px rgba(124,58,237,.12); }
+.inp::placeholder { color: var(--hint); font-weight: 400; }
+.inpPass { padding-right: 48px; }
+
+.passWrap { position: relative; }
+.eyeBtn {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer; font-size: 16px;
+  padding: 4px; line-height: 1;
+}
+
+.errorBox {
+  background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.3);
+  border-radius: var(--r); padding: 11px 14px;
+  font-size: 13px; font-weight: 600; color: var(--red);
+  margin-bottom: 14px;
+}
+
+/* Buttons */
+.btn {
+  width: 100%; background: var(--grad); color: white;
+  border: none; border-radius: var(--r-xl); padding: 17px;
+  font-size: 16px; font-weight: 800; font-family: var(--fn);
+  cursor: pointer; letter-spacing: -.2px;
+  box-shadow: 0 8px 28px rgba(124,58,237,.35);
+  transition: opacity .2s, transform .1s;
+  position: relative; overflow: hidden;
+  margin-bottom: 10px;
+}
+.btn::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.14),transparent); pointer-events:none; }
+.btn:hover  { opacity: .9; transform: translateY(-1px); }
+.btn:active { transform: scale(.99); }
+.btn:disabled { opacity: .65; cursor: default; transform: none; }
+
+.btnOutline {
+  width: 100%; background: transparent; color: var(--txt2);
+  border: 1.5px solid var(--bd2); border-radius: var(--r-xl); padding: 16px;
+  font-size: 15px; font-weight: 700; font-family: var(--fn);
+  cursor: pointer; transition: border-color .2s, color .2s;
+  margin-bottom: 0;
+}
+.btnOutline:hover { border-color: var(--bd3); color: var(--txt); }
+
+.switchTxt {
+  font-size: 13px; color: var(--muted); text-align: center;
+  margin-bottom: 12px; margin-top: 4px;
+}
+.switchBtn {
+  background: none; border: none; color: var(--violet3);
+  font-size: 13px; font-weight: 700; font-family: var(--fn);
+  cursor: pointer; padding: 0; transition: color .15s;
+}
+.switchBtn:hover { color: var(--violet4); }
+
+.backBtn {
+  background: none; border: none; color: var(--muted);
+  font-size: 13px; font-weight: 600; font-family: var(--fn);
+  cursor: pointer; padding: 8px; width: 100%; text-align: center;
+  transition: color .2s;
+}
+.backBtn:hover { color: var(--txt2); }
+
+[data-theme="light"] .featureRow { background: white; }
+[data-theme="light"] .inp        { background: white; }
+[data-theme="light"] .btnOutline { background: white; }
+
+/* ── Forgot Password ── */
+.forgotLink {
+  background: none; border: none;
+  color: var(--violet3); font-size: 12px; font-weight: 700;
+  font-family: var(--fn); cursor: pointer; padding: 0;
+  text-align: right; width: 100%; margin-bottom: 14px;
+  transition: color .15s;
+}
+.forgotLink:hover { color: var(--violet4); text-decoration: underline; }
+
+.forgotHeader { text-align: center; margin-bottom: 20px; }
+.forgotIco    { font-size: 40px; display: block; margin-bottom: 8px; }
+
+/* Step indicators */
+.steps {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; margin-bottom: 20px; width: 100%;
+}
+.stepWrap  { display: flex; align-items: center; }
+.stepDot {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800;
+  background: var(--s3); border: 2px solid var(--bd2);
+  color: var(--muted); flex-shrink: 0;
+  transition: all .25s;
+}
+.stepDotOn   { background: var(--violet2) !important; border-color: var(--violet2) !important; color: white !important; }
+.stepDotDone { background: var(--green)   !important; border-color: var(--green)   !important; color: white !important; }
+.stepLine {
+  width: 48px; height: 2px; background: var(--bd2);
+  transition: background .3s;
+}
+.stepLineOn { background: var(--green); }
+
+.stepLabel {
+  font-size: 11px; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .06em;
+  margin-bottom: 14px; text-align: center;
+}
+
+/* Hint card */
+.hintCard {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: rgba(124,58,237,.1); border: 1px solid rgba(124,58,237,.25);
+  border-radius: var(--r-lg); padding: 12px 14px;
+  font-size: 12px; font-weight: 500; color: var(--txt2);
+  margin-bottom: 14px; line-height: 1.5;
+}
+.hintCardIco { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* Password strength */
+.strengthRow {
+  display: flex; align-items: center; gap: 5px; margin-bottom: 12px;
+}
+.strengthBar {
+  flex: 1; height: 4px; border-radius: 2px;
+  background: var(--s4); transition: background .3s;
+}
+.strengthOn { /* color set inline */ }
+.strengthLbl {
+  font-size: 10px; font-weight: 700; color: var(--muted);
+  flex-shrink: 0; margin-left: 4px; min-width: 60px;
+}
+
+/* Success screen */
+.successIco {
+  font-size: 56px; text-align: center; display: block;
+  margin-bottom: 10px;
+  animation: popIn .4s cubic-bezier(.17,.67,.3,1.3) both;
+}
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
